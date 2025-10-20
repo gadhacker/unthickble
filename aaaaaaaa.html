@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+    <meta name="description" content="EduAdmin Login - Secure access to your education management dashboard">
+    <title>EduAdmin - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(to right, #2563eb, #7c3aed);
+        }
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-bg {
+            background: var(--primary-gradient);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .theme-transition {
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animated-gradient-bg {
+            background: url('kass-background.png') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #f0f4f8; /* Fallback color */
+            position: relative;
+            min-height: 100vh;
+        }
+        .dark .animated-gradient-bg {
+            background: url('kass-background.png') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #1e293b; /* Dark mode fallback */
+            position: relative;
+        }
+        .glass-panel {
+            backdrop-filter: blur(10px) saturate(140%);
+            -webkit-backdrop-filter: blur(10px) saturate(140%);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ring-gradient {
+            background: conic-gradient(from 0deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(59, 130, 246, 0.3));
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        .animated-gradient {
+            background: var(--primary-gradient);
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @media (max-width: 640px) {
+            .max-w-md { max-width: 100%; }
+            .card-shadow { box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="animated-gradient-bg flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Decorative rings -->
+    <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full ring-gradient opacity-20 blur-3xl animate-[float_8s_ease-in-out_infinite]"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 w-[28rem] h-[28rem] rounded-full ring-gradient opacity-10 blur-3xl animate-[float_10s_ease-in-out_infinite]"></div>
+
+    <div class="max-w-md w-full space-y-8 fade-in z-10">
+        <!-- Header -->
+        <div class="text-center">
+            <div class="flex items-center justify-center mb-6">
+                <div class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-xl mr-3">
+                    E
+                </div>
+                <h1 class="text-3xl font-bold gradient-text" aria-label="EduAdmin">EduAdmin</h1>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Welcome Back</h2>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">Sign in to access your dashboard</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="rounded-2xl card-shadow p-6 glass-panel ring-1 ring-white/30 dark:ring-white/10">
+            <form class="space-y-6" id="loginForm" novalidate>
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" aria-required="true">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input 
+                            id="email" 
+                            name="email" 
+                            type="email" 
+                            autocomplete="email" 
+                            required 
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-200"
+                            placeholder="you@example.com"
+                            aria-describedby="email-error"
+                        >
+                    </div>
+                    <p id="email-error" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300" aria-required="true">Password</label>
+                        <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">Forgot password?</a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input 
+                            id="password" 
+                            name="password" 
+                            type="password" 
+                            autocomplete="current-password" 
+                            required 
+                            class="block w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-200"
+                            placeholder="Enter your password"
+                            aria-describedby="password-error password-strength-label"
+                        >
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p id="password-error" class="mt-1 text-sm text-red-600 hidden" role="alert"></p>
+                    <div class="mt-3">
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span>Password strength</span>
+                            <span id="password-strength-label">&nbsp;</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div id="password-strength-bar" class="h-2 w-0 rounded-full transition-all duration-300 bg-red-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input 
+                        id="remember-me" 
+                        name="rememberMe" 
+                        type="checkbox" 
+                        class="h-4 w-4 accent-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-200"
+                    >
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Remember me</label>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button 
+                        type="submit" 
+                        id="submit-btn"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-white gradient-bg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                    >
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-sign-in-alt text-blue-200 group-hover:text-blue-100 transition-colors duration-200"></i>
+                        </span>
+                        <span id="btn-text">Sign in to Dashboard</span>
+                        <span id="btn-loading" class="hidden">
+                            <span class="loading"></span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center">
+            <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">&copy; 2023 EduAdmin. Education Management System.</p>
+        </div>
+
+        <!-- Dark Mode Toggle -->
+        <div class="flex justify-center mt-6">
+            <button id="toggleDarkMode" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
+                <i id="darkModeIcon" class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Support Message -->
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Any problem or errors? Request <span class="font-semibold text-blue-600 dark:text-blue-400">Unthinkable Team (TJB & MG)</span> to help you.</p>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Functionality
+        let darkMode = localStorage.getItem('darkMode') === 'true' || (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+
+        function applyDarkMode() {
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+                darkModeIcon.className = 'fas fa-sun';
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+                darkModeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        toggleDarkModeBtn.addEventListener('click', () => {
+            darkMode = !darkMode;
+            applyDarkMode();
+        });
+
+        // Password Visibility Toggle
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            const icon = togglePasswordBtn.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+
+        // Password Strength Meter
+        const strengthBar = document.getElementById('password-strength-bar');
+        const strengthLabel = document.getElementById('password-strength-label');
+
+        function scorePassword(pw) {
+            let score = 0;
+            if (!pw) return 0;
+            const variations = { digits: /\d/.test(pw), lower: /[a-z]/.test(pw), upper: /[A-Z]/.test(pw), nonWords: /[^\w]/.test(pw) };
+            let variationCount = Object.values(variations).filter(Boolean).length;
+            score += variationCount * 10;
+            score += Math.min(20, Math.floor(pw.length * 5));
+            return Math.min(100, score);
+        }
+
+        function updateStrength(pw) {
+            const s = scorePassword(pw);
+            let color = '#ef4444', label = 'Weak';
+            if (s >= 70) { color = '#22c55e'; label = 'Strong'; }
+            else if (s >= 40) { color = '#f59e0b'; label = 'Medium'; }
+            strengthBar.style.width = `${s}%`;
+            strengthBar.style.backgroundColor = color;
+            strengthLabel.textContent = label;
+        }
+
+        passwordInput.addEventListener('input', (e) => updateStrength(e.target.value));
+
+        // Form Validation
+        function validateForm() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+            let isValid = true;
+
+            emailError.classList.add('hidden');
+            passwordError.classList.add('hidden');
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                emailError.textContent = 'Email is required';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (!password) {
+                passwordError.textContent = 'Password is required';
+                passwordError.classList.remove('hidden');
+                isValid = false;
+            } else if (password.length < 3) {
+                passwordError.textContent = 'Password must be at least 3 characters';
+                passwordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Form Submission
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoading = document.getElementById('btn-loading');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+
+            try {
+                const response = await fetch('../backend/login_action.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value.trim(),
+                        password: document.getElementById('password').value,
+                        rememberMe: document.getElementById('remember-me').checked
+                    })
+                });
+
+                const data = await response.json();
+                showAlert(data.success ? 'Login successful! Redirecting...' : data.message || 'Login failed. Please try again.', data.success ? 'success' : 'error');
+                if (data.success) {
+                    setTimeout(() => { window.location.href = data.redirect || 'index.php'; }, 1000);
+                } else {
+                    document.getElementById('password').value = '';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Network error. Please check your connection and try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+            }
+        });
+
+        // Real-time Validation
+        ['email', 'password'].forEach(id => document.getElementById(id).addEventListener('blur', validateForm));
+
+        // Alert Function
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-medium shadow-lg z-50 fade-in ${
+                type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'
+            }`;
+            alert.innerHTML = `<div class="flex items-center"><i class="fas ${
+                type === 'error' ? 'fa-exclamation-triangle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'
+            } mr-2"></i><span>${message}</span></div>`;
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 5000);
+        }
+
+        applyDarkMode();
+    </script>
+</body>
+</html>
