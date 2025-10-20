@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAdmin - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        /* Existing styles remain unchanged */
+        .gradient-text {
+            background: linear-gradient(to right, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(to right, #2563eb, #7c3aed);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .theme-transition {
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Animated gradient background helpers */
+        .animated-gradient-bg {
+            background: url('kass-background.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        .dark .animated-gradient-bg {
+            background: url('kass-background.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        .glass-panel {
+            backdrop-filter: saturate(140%) blur(14px);
+            -webkit-backdrop-filter: saturate(140%) blur(14px);
+            background: rgba(255,255,255,0.72);
+        }
+        .dark .glass-panel {
+            background: rgba(17,24,39,0.62);
+        }
+        .ring-gradient {
+            background: conic-gradient(from 0deg, rgba(59,130,246,0.3), rgba(147,51,234,0.3), rgba(59,130,246,0.3));
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animated-gradient {
+            background: linear-gradient(90deg, #2563eb, #7c3aed, #2563eb);
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="min-h-screen theme-transition animated-gradient-bg flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Decorative rings -->
+    <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full ring-gradient opacity-20 blur-3xl animate-[float_8s_ease-in-out_infinite]"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 w-[28rem] h-[28rem] rounded-full ring-gradient opacity-10 blur-3xl animate-[float_10s_ease-in-out_infinite]"></div>
+
+    <div class="max-w-md w-full space-y-8 fade-in">
+        <!-- Header -->
+        <div class="text-center">
+            <div class="flex items-center justify-center mb-6">
+                <div class="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-xl mr-3">
+                    E
+                </div>
+                <h1 class="text-3xl font-bold gradient-text">
+                    EduAdmin
+                </h1>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+                Welcome Back
+            </h2>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                Sign in to access your dashboard
+            </p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="rounded-2xl card-shadow p-8 theme-transition glass-panel ring-1 ring-white/30 dark:ring-white/10">
+            <form class="space-y-6" id="loginForm">
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Email Address
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input 
+                            id="email" 
+                            name="email" 
+                            type="email" 
+                            autocomplete="email" 
+                            required 
+                            class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 theme-transition"
+                            placeholder="you@example.com"
+                            value=""
+                        >
+                    </div>
+                    <p id="email-error" class="mt-1 text-sm text-red-600 hidden"></p>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Password
+                        </label>
+                        <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 theme-transition">
+                            Forgot password?
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input 
+                            id="password" 
+                            name="password" 
+                            type="password" 
+                            autocomplete="current-password" 
+                            required 
+                            class="block w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 theme-transition"
+                            placeholder="Enter your password"
+                            value=""
+                        >
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <i class="fas fa-eye text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 theme-transition"></i>
+                        </button>
+                    </div>
+                    <p id="password-error" class="mt-1 text-sm text-red-600 hidden"></p>
+                    <div class="mt-3">
+                        <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            <span>Password strength</span>
+                            <span id="password-strength-label">&nbsp;</span>
+                        </div>
+                        <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div id="password-strength-bar" class="h-2 w-0 rounded-full transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input 
+                        id="remember-me" 
+                        name="rememberMe" 
+                        type="checkbox" 
+                        class="h-4 w-4 accent-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    >
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                        Remember me
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button 
+                        type="submit" 
+                        id="submit-btn"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-medium text-white animated-gradient hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 theme-transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                    >
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-sign-in-alt text-blue-300 group-hover:text-blue-200 theme-transition"></i>
+                        </span>
+                        <span id="btn-text">Sign in to Dashboard</span>
+                        <span id="btn-loading" class="hidden">
+                            <span class="loading"></span>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center">
+            <p class="mt-4 text-xs text-gray-500 dark:text-gray-500">
+                © 2023 EduAdmin. Education Management System.
+            </p>
+        </div>
+
+        <!-- Dark Mode Toggle -->
+        <div class="flex justify-center mt-6">
+            <button id="toggleDarkMode" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 theme-transition">
+                <i id="darkModeIcon" class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <!-- Support Message -->
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+                Any problem or errors? Request <span class="font-semibold text-blue-600 dark:text-blue-400">Unthinkable Team (TJB & MG)</span> to help you.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Functionality
+        let darkMode = localStorage.getItem('darkMode') === 'true' || 
+                      (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+        const darkModeIcon = document.getElementById('darkModeIcon');
+
+        function applyDarkMode() {
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+                darkModeIcon.className = 'fas fa-sun';
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+                darkModeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        toggleDarkModeBtn.addEventListener('click', () => {
+            darkMode = !darkMode;
+            applyDarkMode();
+        });
+
+        // Password Visibility Toggle
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            const icon = togglePasswordBtn.querySelector('i');
+            if (type === 'password') {
+                icon.className = 'fas fa-eye text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 theme-transition';
+            } else {
+                icon.className = 'fas fa-eye-slash text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 theme-transition';
+            }
+        });
+
+        // Password strength meter
+        const strengthBar = document.getElementById('password-strength-bar');
+        const strengthLabel = document.getElementById('password-strength-label');
+        function scorePassword(pw) {
+            let score = 0;
+            if (!pw) return 0;
+            const variations = {
+                digits: /\d/.test(pw),
+                lower: /[a-z]/.test(pw),
+                upper: /[A-Z]/.test(pw),
+                nonWords: /[^\w]/.test(pw)
+            };
+            let variationCount = 0;
+            for (const check in variations) variationCount += variations[check] ? 1 : 0;
+            score += variationCount * 10;
+            score += Math.min(20, Math.floor(pw.length * 5));
+            return Math.min(100, score);
+        }
+        function updateStrength(pw) {
+            const s = scorePassword(pw);
+            let color = '#ef4444', label = 'Weak';
+            if (s >= 70) { color = '#22c55e'; label = 'Strong'; }
+            else if (s >= 40) { color = '#f59e0b'; label = 'Medium'; }
+            strengthBar.style.width = s + '%';
+            strengthBar.style.backgroundColor = color;
+            strengthLabel.textContent = label;
+        }
+        document.getElementById('password').addEventListener('input', (e) => updateStrength(e.target.value));
+
+        // Form Validation
+        function validateForm() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+            let isValid = true;
+
+            // Clear previous errors
+            emailError.classList.add('hidden');
+            passwordError.classList.add('hidden');
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                emailError.textContent = 'Email is required';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            // Password validation
+            if (!password) {
+                passwordError.textContent = 'Password is required';
+                passwordError.classList.remove('hidden');
+                isValid = false;
+            } else if (password.length < 3) {
+                passwordError.textContent = 'Password must be at least 3 characters';
+                passwordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Form Submission
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoading = document.getElementById('btn-loading');
+        
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            btnLoading.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('../backend/login_action.php', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        email, 
+                        password, 
+                        rememberMe 
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'index.php';
+                    }, 1000);
+                } else {
+                    showAlert(data.message || 'Login failed. Please try again.', 'error');
+                    document.getElementById('password').value = '';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Network error. Please check your connection and try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('email').addEventListener('blur', validateForm);
+        document.getElementById('password').addEventListener('blur', validateForm);
+
+        // Alert Function
+        function showAlert(message, type) {
+            const existingAlert = document.querySelector('.alert-message');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+            const alert = document.createElement('div');
+            alert.className = `alert-message fixed top-4 right-4 p-4 rounded-xl text-white font-medium card-shadow z-50 fade-in ${
+                type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'
+            }`;
+            alert.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${
+                        type === 'error' ? 'fa-exclamation-triangle' : 
+                        type === 'success' ? 'fa-check-circle' : 'fa-info-circle'
+                    } mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(alert);
+            setTimeout(() => { if (alert.parentNode) alert.remove(); }, 5000);
+        }
+
+        console.log('Demo credentials:\nEmail: admin@school.com\nPassword: (check database)');
+        applyDarkMode();
+    </script>
+</body>
+</html>
